@@ -6,126 +6,134 @@
 <title>CliniCall</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-                     "Segoe UI", sans-serif;
-        background: #f4f7fb;
-        color: #172033;
-    }
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                 "Segoe UI", sans-serif;
+    background: #f4f7fb;
+    color: #172033;
+}
 
-    header {
-        background: #0b5cff;
-        color: white;
-        padding: 22px 20px;
-        text-align: center;
-    }
+header {
+    background: #0b5cff;
+    color: white;
+    padding: 22px 20px;
+    text-align: center;
+}
 
-    header h1 {
-        margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-    }
+header h1 {
+    margin: 0;
+    font-size: 30px;
+}
 
-    header p {
-        margin: 5px 0 0;
-        opacity: .85;
-        font-size: 14px;
-    }
+header p {
+    margin: 5px 0 0;
+    opacity: .85;
+    font-size: 14px;
+}
 
-    main {
-        max-width: 600px;
-        margin: auto;
-        padding: 20px;
-    }
+main {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
 
-    .card {
-        background: white;
-        border-radius: 18px;
-        padding: 20px;
-        margin-bottom: 18px;
-        box-shadow: 0 5px 20px rgba(0,0,0,.06);
-    }
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+}
 
-    label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
 
-    textarea {
-        width: 100%;
-        min-height: 150px;
-        border: 1px solid #d9deea;
-        border-radius: 12px;
-        padding: 14px;
-        font-size: 16px;
-        resize: vertical;
-        outline: none;
-    }
+textarea,
+select {
+    width: 100%;
+    border: 1px solid #d9deea;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 16px;
+    background: white;
+}
 
-    textarea:focus {
-        border-color: #0b5cff;
-    }
+textarea {
+    min-height: 130px;
+    resize: vertical;
+}
 
-    button {
-        width: 100%;
-        border: 0;
-        border-radius: 13px;
-        padding: 15px;
-        font-size: 17px;
-        font-weight: 600;
-        margin-top: 10px;
-        cursor: pointer;
-    }
+button {
+    width: 100%;
+    border: 0;
+    border-radius: 13px;
+    padding: 15px;
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 10px;
+}
 
-    .primary {
-        background: #0b5cff;
-        color: white;
-    }
+.primary {
+    background: #0b5cff;
+    color: white;
+}
 
-    .secondary {
-        background: #edf2ff;
-        color: #0b5cff;
-    }
+.secondary {
+    background: #edf2ff;
+    color: #0b5cff;
+}
 
-    .danger {
-        background: #fff0f0;
-        color: #d62828;
-    }
+.danger {
+    background: #fff0f0;
+    color: #d62828;
+}
 
-    .patient {
-        text-align: center;
-        padding: 25px 10px;
-    }
+.patient {
+    text-align: center;
+    padding: 15px 5px 20px;
+}
 
-    .number {
-        font-size: 18px;
-        color: #697386;
-        margin-bottom: 8px;
-    }
+.number {
+    font-size: 17px;
+    color: #697386;
+}
 
-    .name {
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
+.name {
+    font-size: 30px;
+    font-weight: 700;
+    margin: 7px 0;
+}
 
-    .status {
-        color: #697386;
-        font-size: 14px;
-    }
+.destination {
+    font-size: 18px;
+    color: #0b5cff;
+    font-weight: 600;
+}
 
-    .counter {
-        text-align: center;
-        font-size: 14px;
-        color: #697386;
-        margin-top: 12px;
-    }
+.status {
+    margin-top: 10px;
+    color: #697386;
+    font-size: 14px;
+}
+
+.counter {
+    text-align: center;
+    font-size: 14px;
+    color: #697386;
+    margin-top: 12px;
+}
+
+.destinationBox {
+    margin-top: 15px;
+}
 </style>
 </head>
 
@@ -138,101 +146,190 @@
 
 <main>
 
-    <div class="card">
-        <label for="patientList">Lista de pacientes</label>
+<div class="card">
 
-        <textarea id="patientList"
-        placeholder="Escribe un paciente por línea:
+    <label for="patientList">
+        Lista de pacientes
+    </label>
+
+    <textarea id="patientList"
+    placeholder="Escribe un paciente por línea:
 
 Juan Pérez
 María López
 Carlos García"></textarea>
 
-        <button class="primary" onclick="loadPatients()">
-            Cargar pacientes
-        </button>
-    </div>
+    <button class="primary" onclick="loadPatients()">
+        📋 Cargar pacientes
+    </button>
 
-    <div class="card">
+</div>
 
-        <div class="patient">
 
-            <div class="number" id="number">
-                Paciente
-            </div>
+<div class="card">
 
-            <div class="name" id="name">
-                —
-            </div>
+    <div class="patient">
 
-            <div class="status" id="status">
-                Esperando lista de pacientes
-            </div>
-
+        <div class="number" id="number">
+            Paciente
         </div>
 
-        <button class="primary" onclick="callPatient()">
-            🔊 Llamar paciente
-        </button>
+        <div class="name" id="name">
+            —
+        </div>
 
-        <button class="secondary" onclick="nextPatient()">
-            ⏭️ Siguiente paciente
-        </button>
+        <div class="destination" id="destination">
+            —
+        </div>
 
-        <button class="secondary" onclick="repeatPatient()">
-            🔁 Repetir llamado
-        </button>
-
-        <button class="danger" onclick="stopCalling()">
-            ⏹️ Detener voz
-        </button>
-
-        <div class="counter" id="counter">
-            0 pacientes cargados
+        <div class="status" id="status">
+            Esperando lista de pacientes
         </div>
 
     </div>
+
+
+    <div class="destinationBox">
+
+        <label for="destinationSelect">
+            Destino
+        </label>
+
+        <select id="destinationSelect"
+                onchange="changeDestination()">
+
+            <option value="signos vitales">
+                Signos vitales
+            </option>
+
+            <option value="Clínica 1">
+                Clínica 1
+            </option>
+
+            <option value="Clínica 2">
+                Clínica 2
+            </option>
+
+            <option value="Clínica 3">
+                Clínica 3
+            </option>
+
+            <option value="Clínica 4">
+                Clínica 4
+            </option>
+
+            <option value="esperar frente a Clínica 1">
+                Esperar frente a Clínica 1
+            </option>
+
+            <option value="esperar frente a Clínica 2">
+                Esperar frente a Clínica 2
+            </option>
+
+            <option value="esperar frente a Clínica 3">
+                Esperar frente a Clínica 3
+            </option>
+
+            <option value="esperar frente a Clínica 4">
+                Esperar frente a Clínica 4
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <button class="primary" onclick="callPatient()">
+        🔊 Llamar
+    </button>
+
+
+    <button class="secondary" onclick="nextPatient()">
+        ⏭️ Siguiente
+    </button>
+
+
+    <button class="secondary" onclick="repeatPatient()">
+        🔁 Repetir
+    </button>
+
+
+    <button class="danger" onclick="stopCalling()">
+        ⏹️ Detener voz
+    </button>
+
+
+    <div class="counter" id="counter">
+        0 pacientes cargados
+    </div>
+
+</div>
 
 </main>
+
 
 <script>
 
 let patients = [];
 let currentIndex = -1;
 
+
+/* CARGAR PACIENTES */
+
 function loadPatients() {
 
-    const text = document.getElementById("patientList").value;
+    const text =
+        document.getElementById("patientList").value;
 
     patients = text
         .split("\n")
         .map(name => name.trim())
         .filter(name => name.length > 0);
 
-    currentIndex = patients.length > 0 ? 0 : -1;
+    currentIndex =
+        patients.length > 0 ? 0 : -1;
 
     updateScreen();
 
     if (patients.length > 0) {
+
         document.getElementById("status").textContent =
-            "Lista cargada. Lista para llamar.";
+            "Lista cargada. Seleccione el destino.";
+
     }
+
 }
+
+
+/* ACTUALIZAR PANTALLA */
 
 function updateScreen() {
 
-    const name = document.getElementById("name");
-    const number = document.getElementById("number");
-    const counter = document.getElementById("counter");
+    const name =
+        document.getElementById("name");
 
-    if (currentIndex === -1 || patients.length === 0) {
+    const number =
+        document.getElementById("number");
+
+    const destination =
+        document.getElementById("destination");
+
+    const counter =
+        document.getElementById("counter");
+
+
+    if (currentIndex === -1 ||
+        patients.length === 0) {
 
         name.textContent = "—";
         number.textContent = "Paciente";
-        counter.textContent = "0 pacientes cargados";
+        destination.textContent = "—";
+        counter.textContent =
+            "0 pacientes cargados";
 
         return;
     }
+
 
     number.textContent =
         "Paciente " + (currentIndex + 1);
@@ -240,94 +337,204 @@ function updateScreen() {
     name.textContent =
         patients[currentIndex];
 
+
+    const selected =
+        document.getElementById("destinationSelect")
+        .value;
+
+    destination.textContent =
+        selected;
+
+
     counter.textContent =
-        (currentIndex + 1) + " de " + patients.length;
+        (currentIndex + 1) +
+        " de " +
+        patients.length;
 
 }
+
+
+/* CAMBIAR DESTINO */
+
+function changeDestination() {
+
+    if (patients.length === 0) {
+        return;
+    }
+
+    const selected =
+        document.getElementById("destinationSelect")
+        .value;
+
+    document.getElementById("destination")
+        .textContent = selected;
+
+}
+
+
+/* LLAMAR */
 
 function callPatient() {
 
     if (patients.length === 0) {
-        alert("Primero debes cargar una lista de pacientes.");
+
+        alert(
+            "Primero debes cargar una lista de pacientes."
+        );
+
         return;
     }
 
-    const patient = patients[currentIndex];
 
-    speakPatient(patient);
+    speakPatient();
 
 }
 
-function speakPatient(patient) {
+
+/* VOZ */
+
+function speakPatient() {
 
     window.speechSynthesis.cancel();
 
-    const text =
-        "Paciente " +
-        patient +
-        ". Por favor, pasar a consulta.";
+
+    const patient =
+        patients[currentIndex];
+
+
+    const destination =
+        document.getElementById("destinationSelect")
+        .value;
+
+
+    let text;
+
+
+    if (destination === "signos vitales") {
+
+        text =
+            "Paciente " +
+            patient +
+            ", por favor pasar a signos vitales.";
+
+    }
+
+    else if (
+        destination.startsWith("esperar frente")
+    ) {
+
+        text =
+            "Paciente " +
+            patient +
+            ", por favor " +
+            destination +
+            ".";
+
+    }
+
+    else {
+
+        text =
+            "Paciente " +
+            patient +
+            ", por favor pasar a " +
+            destination +
+            ".";
+
+    }
+
 
     const speech =
         new SpeechSynthesisUtterance(text);
+
 
     speech.lang = "es-GT";
     speech.rate = 0.85;
     speech.pitch = 1;
     speech.volume = 1;
 
-    document.getElementById("status").textContent =
-        "🔊 Llamando...";
+
+    document.getElementById("status")
+        .textContent = "🔊 Llamando...";
+
 
     speech.onend = function() {
 
-        document.getElementById("status").textContent =
+        document.getElementById("status")
+            .textContent =
             "Llamado realizado";
 
     };
+
 
     window.speechSynthesis.speak(speech);
 
 }
 
+
+/* SIGUIENTE */
+
 function nextPatient() {
 
     if (patients.length === 0) {
-        alert("Primero debes cargar una lista.");
+
+        alert(
+            "Primero debes cargar una lista."
+        );
+
         return;
     }
 
-    if (currentIndex < patients.length - 1) {
+
+    if (currentIndex <
+        patients.length - 1) {
 
         currentIndex++;
 
         updateScreen();
 
-        speakPatient(patients[currentIndex]);
 
-    } else {
+        document.getElementById("status")
+            .textContent =
+            "Listo para llamar.";
 
-        document.getElementById("status").textContent =
-            "✅ Todos los pacientes han sido llamados.";
+    }
+
+    else {
+
+        document.getElementById("status")
+            .textContent =
+            "✅ No hay más pacientes.";
 
     }
 
 }
+
+
+/* REPETIR */
 
 function repeatPatient() {
 
-    if (patients.length === 0 || currentIndex === -1) {
+    if (
+        patients.length === 0 ||
+        currentIndex === -1
+    ) {
         return;
     }
 
-    speakPatient(patients[currentIndex]);
+    speakPatient();
 
 }
+
+
+/* DETENER */
 
 function stopCalling() {
 
     window.speechSynthesis.cancel();
 
-    document.getElementById("status").textContent =
+    document.getElementById("status")
+        .textContent =
         "Voz detenida.";
 
 }
