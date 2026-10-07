@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CliniCall</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                     "Segoe UI", sans-serif;
+        background: #f4f7fb;
+        color: #172033;
+    }
+
+    header {
+        background: #0b5cff;
+        color: white;
+        padding: 22px 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+    }
+
+    header p {
+        margin: 5px 0 0;
+        opacity: .85;
+        font-size: 14px;
+    }
+
+    main {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 18px;
+        padding: 20px;
+        margin-bottom: 18px;
+        box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 150px;
+        border: 1px solid #d9deea;
+        border-radius: 12px;
+        padding: 14px;
+        font-size: 16px;
+        resize: vertical;
+        outline: none;
+    }
+
+    textarea:focus {
+        border-color: #0b5cff;
+    }
+
+    button {
+        width: 100%;
+        border: 0;
+        border-radius: 13px;
+        padding: 15px;
+        font-size: 17px;
+        font-weight: 600;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    .primary {
+        background: #0b5cff;
+        color: white;
+    }
+
+    .secondary {
+        background: #edf2ff;
+        color: #0b5cff;
+    }
+
+    .danger {
+        background: #fff0f0;
+        color: #d62828;
+    }
+
+    .patient {
+        text-align: center;
+        padding: 25px 10px;
+    }
+
+    .number {
+        font-size: 18px;
+        color: #697386;
+        margin-bottom: 8px;
+    }
+
+    .name {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .status {
+        color: #697386;
+        font-size: 14px;
+    }
+
+    .counter {
+        text-align: center;
+        font-size: 14px;
+        color: #697386;
+        margin-top: 12px;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>CliniCall</h1>
+    <p>Patient Calling System</p>
+</header>
+
+<main>
+
+    <div class="card">
+        <label for="patientList">Lista de pacientes</label>
+
+        <textarea id="patientList"
+        placeholder="Escribe un paciente por línea:
+
+Juan Pérez
+María López
+Carlos García"></textarea>
+
+        <button class="primary" onclick="loadPatients()">
+            Cargar pacientes
+        </button>
+    </div>
+
+    <div class="card">
+
+        <div class="patient">
+
+            <div class="number" id="number">
+                Paciente
+            </div>
+
+            <div class="name" id="name">
+                —
+            </div>
+
+            <div class="status" id="status">
+                Esperando lista de pacientes
+            </div>
+
+        </div>
+
+        <button class="primary" onclick="callPatient()">
+            🔊 Llamar paciente
+        </button>
+
+        <button class="secondary" onclick="nextPatient()">
+            ⏭️ Siguiente paciente
+        </button>
+
+        <button class="secondary" onclick="repeatPatient()">
+            🔁 Repetir llamado
+        </button>
+
+        <button class="danger" onclick="stopCalling()">
+            ⏹️ Detener voz
+        </button>
+
+        <div class="counter" id="counter">
+            0 pacientes cargados
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+
+let patients = [];
+let currentIndex = -1;
+
+function loadPatients() {
+
+    const text = document.getElementById("patientList").value;
+
+    patients = text
+        .split("\n")
+        .map(name => name.trim())
+        .filter(name => name.length > 0);
+
+    currentIndex = patients.length > 0 ? 0 : -1;
+
+    updateScreen();
+
+    if (patients.length > 0) {
+        document.getElementById("status").textContent =
+            "Lista cargada. Lista para llamar.";
+    }
+}
+
+function updateScreen() {
+
+    const name = document.getElementById("name");
+    const number = document.getElementById("number");
+    const counter = document.getElementById("counter");
+
+    if (currentIndex === -1 || patients.length === 0) {
+
+        name.textContent = "—";
+        number.textContent = "Paciente";
+        counter.textContent = "0 pacientes cargados";
+
+        return;
+    }
+
+    number.textContent =
+        "Paciente " + (currentIndex + 1);
+
+    name.textContent =
+        patients[currentIndex];
+
+    counter.textContent =
+        (currentIndex + 1) + " de " + patients.length;
+
+}
+
+function callPatient() {
+
+    if (patients.length === 0) {
+        alert("Primero debes cargar una lista de pacientes.");
+        return;
+    }
+
+    const patient = patients[currentIndex];
+
+    speakPatient(patient);
+
+}
+
+function speakPatient(patient) {
+
+    window.speechSynthesis.cancel();
+
+    const text =
+        "Paciente " +
+        patient +
+        ". Por favor, pasar a consulta.";
+
+    const speech =
+        new SpeechSynthesisUtterance(text);
+
+    speech.lang = "es-GT";
+    speech.rate = 0.85;
+    speech.pitch = 1;
+    speech.volume = 1;
+
+    document.getElementById("status").textContent =
+        "🔊 Llamando...";
+
+    speech.onend = function() {
+
+        document.getElementById("status").textContent =
+            "Llamado realizado";
+
+    };
+
+    window.speechSynthesis.speak(speech);
+
+}
+
+function nextPatient() {
+
+    if (patients.length === 0) {
+        alert("Primero debes cargar una lista.");
+        return;
+    }
+
+    if (currentIndex < patients.length - 1) {
+
+        currentIndex++;
+
+        updateScreen();
+
+        speakPatient(patients[currentIndex]);
+
+    } else {
+
+        document.getElementById("status").textContent =
+            "✅ Todos los pacientes han sido llamados.";
+
+    }
+
+}
+
+function repeatPatient() {
+
+    if (patients.length === 0 || currentIndex === -1) {
+        return;
+    }
+
+    speakPatient(patients[currentIndex]);
+
+}
+
+function stopCalling() {
+
+    window.speechSynthesis.cancel();
+
+    document.getElementById("status").textContent =
+        "Voz detenida.";
+
+}
+
+</script>
+
+</body>
+</html>
