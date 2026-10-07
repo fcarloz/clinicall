@@ -37,23 +37,28 @@ header p {
 }
 
 main {
-    max-width: 600px;
+    max-width: 650px;
     margin: auto;
-    padding: 20px;
+    padding: 18px;
 }
 
 .card {
     background: white;
     border-radius: 18px;
     padding: 20px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     box-shadow: 0 5px 20px rgba(0,0,0,.06);
+}
+
+h2 {
+    font-size: 18px;
+    margin: 0 0 15px;
 }
 
 label {
     display: block;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
 }
 
 textarea,
@@ -61,13 +66,13 @@ select {
     width: 100%;
     border: 1px solid #d9deea;
     border-radius: 12px;
-    padding: 14px;
+    padding: 13px;
     font-size: 16px;
     background: white;
 }
 
 textarea {
-    min-height: 130px;
+    min-height: 125px;
     resize: vertical;
 }
 
@@ -78,7 +83,7 @@ button {
     padding: 15px;
     font-size: 17px;
     font-weight: 600;
-    margin-top: 10px;
+    margin-top: 9px;
 }
 
 .primary {
@@ -91,6 +96,11 @@ button {
     color: #0b5cff;
 }
 
+.group {
+    background: #111827;
+    color: white;
+}
+
 .danger {
     background: #fff0f0;
     color: #d62828;
@@ -98,11 +108,11 @@ button {
 
 .patient {
     text-align: center;
-    padding: 15px 5px 20px;
+    padding: 10px 5px 15px;
 }
 
 .number {
-    font-size: 17px;
+    font-size: 16px;
     color: #697386;
 }
 
@@ -119,9 +129,39 @@ button {
 }
 
 .status {
-    margin-top: 10px;
+    margin-top: 9px;
     color: #697386;
     font-size: 14px;
+}
+
+.modeButtons {
+    display: flex;
+    gap: 8px;
+}
+
+.modeButtons button {
+    margin-top: 0;
+    padding: 12px 8px;
+    font-size: 14px;
+}
+
+.modeActive {
+    background: #0b5cff !important;
+    color: white !important;
+}
+
+.settingsRow {
+    margin-top: 15px;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+.voiceName {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #697386;
 }
 
 .counter {
@@ -131,8 +171,16 @@ button {
     margin-top: 12px;
 }
 
-.destinationBox {
-    margin-top: 15px;
+.groupResult {
+    background: #f5f7fb;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 15px;
+}
+
+.groupResult strong {
+    color: #0b5cff;
 }
 </style>
 </head>
@@ -146,27 +194,98 @@ button {
 
 <main>
 
+<!-- LISTA -->
+
 <div class="card">
 
-    <label for="patientList">
-        Lista de pacientes
-    </label>
+    <h2>📋 Pacientes</h2>
 
     <textarea id="patientList"
-    placeholder="Escribe un paciente por línea:
+    placeholder="Un paciente por línea:
 
 Juan Pérez
 María López
-Carlos García"></textarea>
+Carlos García
+Ana López"></textarea>
 
     <button class="primary" onclick="loadPatients()">
-        📋 Cargar pacientes
+        Cargar pacientes
     </button>
 
 </div>
 
 
+<!-- CONFIGURACIÓN -->
+
 <div class="card">
+
+    <h2>⚙️ Configuración</h2>
+
+    <label>Modo de llamado</label>
+
+    <div class="modeButtons">
+
+        <button
+            id="individualMode"
+            class="modeActive"
+            onclick="setMode('individual')">
+            👤 Individual
+        </button>
+
+        <button
+            id="groupMode"
+            onclick="setMode('group')">
+            👥 Por destino
+        </button>
+
+        <button
+            id="allMode"
+            onclick="setMode('all')">
+            📋 Todos
+        </button>
+
+    </div>
+
+
+    <div class="settingsRow">
+
+        <label for="voiceSelect">
+            🗣️ Voz
+        </label>
+
+        <select id="voiceSelect"></select>
+
+        <div class="voiceName" id="voiceInfo">
+            Voces disponibles en este dispositivo
+        </div>
+
+    </div>
+
+
+    <div class="settingsRow">
+
+        <label for="rate">
+            🎚️ Velocidad
+        </label>
+
+        <input
+            type="range"
+            id="rate"
+            min="0.5"
+            max="1.2"
+            step="0.05"
+            value="0.85">
+
+    </div>
+
+</div>
+
+
+<!-- PACIENTE ACTUAL -->
+
+<div class="card">
+
+    <h2>Paciente actual</h2>
 
     <div class="patient">
 
@@ -189,54 +308,50 @@ Carlos García"></textarea>
     </div>
 
 
-    <div class="destinationBox">
+    <label for="destinationSelect">
+        🏥 Destino
+    </label>
 
-        <label for="destinationSelect">
-            Destino
-        </label>
+    <select id="destinationSelect"
+            onchange="changeDestination()">
 
-        <select id="destinationSelect"
-                onchange="changeDestination()">
+        <option value="signos vitales">
+            Signos vitales
+        </option>
 
-            <option value="signos vitales">
-                Signos vitales
-            </option>
+        <option value="Clínica 1">
+            Clínica 1
+        </option>
 
-            <option value="Clínica 1">
-                Clínica 1
-            </option>
+        <option value="Clínica 2">
+            Clínica 2
+        </option>
 
-            <option value="Clínica 2">
-                Clínica 2
-            </option>
+        <option value="Clínica 3">
+            Clínica 3
+        </option>
 
-            <option value="Clínica 3">
-                Clínica 3
-            </option>
+        <option value="Clínica 4">
+            Clínica 4
+        </option>
 
-            <option value="Clínica 4">
-                Clínica 4
-            </option>
+        <option value="esperar frente a Clínica 1">
+            Esperar frente a Clínica 1
+        </option>
 
-            <option value="esperar frente a Clínica 1">
-                Esperar frente a Clínica 1
-            </option>
+        <option value="esperar frente a Clínica 2">
+            Esperar frente a Clínica 2
+        </option>
 
-            <option value="esperar frente a Clínica 2">
-                Esperar frente a Clínica 2
-            </option>
+        <option value="esperar frente a Clínica 3">
+            Esperar frente a Clínica 3
+        </option>
 
-            <option value="esperar frente a Clínica 3">
-                Esperar frente a Clínica 3
-            </option>
+        <option value="esperar frente a Clínica 4">
+            Esperar frente a Clínica 4
+        </option>
 
-            <option value="esperar frente a Clínica 4">
-                Esperar frente a Clínica 4
-            </option>
-
-        </select>
-
-    </div>
+    </select>
 
 
     <button class="primary" onclick="callPatient()">
@@ -265,6 +380,77 @@ Carlos García"></textarea>
 
 </div>
 
+
+<!-- LLAMADO POR GRUPO -->
+
+<div class="card">
+
+    <h2>👥 Llamado por destino</h2>
+
+    <label for="groupDestination">
+        Seleccionar destino
+    </label>
+
+    <select id="groupDestination"
+            onchange="showGroup()">
+
+        <option value="signos vitales">
+            Signos vitales
+        </option>
+
+        <option value="Clínica 1">
+            Clínica 1
+        </option>
+
+        <option value="Clínica 2">
+            Clínica 2
+        </option>
+
+        <option value="Clínica 3">
+            Clínica 3
+        </option>
+
+        <option value="Clínica 4">
+            Clínica 4
+        </option>
+
+        <option value="esperar frente a Clínica 1">
+            Esperar frente a Clínica 1
+        </option>
+
+        <option value="esperar frente a Clínica 2">
+            Esperar frente a Clínica 2
+        </option>
+
+        <option value="esperar frente a Clínica 3">
+            Esperar frente a Clínica 3
+        </option>
+
+        <option value="esperar frente a Clínica 4">
+            Esperar frente a Clínica 4
+        </option>
+
+    </select>
+
+
+    <div
+        class="groupResult"
+        id="groupResult">
+
+        Carga pacientes para ver el grupo.
+
+    </div>
+
+
+    <button class="group"
+            onclick="callGroup()">
+
+        📢 Llamar grupo
+
+    </button>
+
+</div>
+
 </main>
 
 
@@ -272,36 +458,173 @@ Carlos García"></textarea>
 
 let patients = [];
 let currentIndex = -1;
+let mode = "individual";
+let voices = [];
 
 
-/* CARGAR PACIENTES */
+/* =========================
+   VOCES
+========================= */
 
-function loadPatients() {
+function loadVoices() {
 
-    const text =
-        document.getElementById("patientList").value;
+    voices =
+        window.speechSynthesis.getVoices();
 
-    patients = text
-        .split("\n")
-        .map(name => name.trim())
-        .filter(name => name.length > 0);
+    const select =
+        document.getElementById("voiceSelect");
 
-    currentIndex =
-        patients.length > 0 ? 0 : -1;
+    select.innerHTML = "";
 
-    updateScreen();
+    const spanishVoices =
+        voices.filter(v =>
+            v.lang.toLowerCase().startsWith("es")
+        );
 
-    if (patients.length > 0) {
+    const available =
+        spanishVoices.length > 0
+        ? spanishVoices
+        : voices;
 
-        document.getElementById("status").textContent =
-            "Lista cargada. Seleccione el destino.";
+
+    available.forEach((voice, index) => {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            voices.indexOf(voice);
+
+        option.textContent =
+            voice.name +
+            " — " +
+            voice.lang;
+
+        select.appendChild(option);
+
+    });
+
+
+    if (available.length === 0) {
+
+        const option =
+            document.createElement("option");
+
+        option.textContent =
+            "Voz predeterminada del dispositivo";
+
+        select.appendChild(option);
 
     }
 
 }
 
 
-/* ACTUALIZAR PANTALLA */
+window.speechSynthesis.onvoiceschanged =
+    loadVoices;
+
+loadVoices();
+
+
+/* =========================
+   MODO
+========================= */
+
+function setMode(newMode) {
+
+    mode = newMode;
+
+
+    document
+        .getElementById("individualMode")
+        .classList.remove("modeActive");
+
+    document
+        .getElementById("groupMode")
+        .classList.remove("modeActive");
+
+    document
+        .getElementById("allMode")
+        .classList.remove("modeActive");
+
+
+    if (mode === "individual") {
+
+        document
+            .getElementById("individualMode")
+            .classList.add("modeActive");
+
+    }
+
+    if (mode === "group") {
+
+        document
+            .getElementById("groupMode")
+            .classList.add("modeActive");
+
+    }
+
+    if (mode === "all") {
+
+        document
+            .getElementById("allMode")
+            .classList.add("modeActive");
+
+    }
+
+}
+
+
+/* =========================
+   CARGAR PACIENTES
+========================= */
+
+function loadPatients() {
+
+    const text =
+        document
+        .getElementById("patientList")
+        .value;
+
+
+    patients = text
+        .split("\n")
+        .map(name => name.trim())
+        .filter(name => name.length > 0)
+        .map(name => ({
+            name: name,
+            destination:
+                document
+                .getElementById("destinationSelect")
+                .value
+        }));
+
+
+    currentIndex =
+        patients.length > 0
+        ? 0
+        : -1;
+
+
+    updateScreen();
+    showGroup();
+
+
+    if (patients.length > 0) {
+
+        document
+            .getElementById("status")
+            .textContent =
+            "Lista cargada.";
+
+    }
+
+}
+
+
+/* =========================
+   PANTALLA
+========================= */
 
 function updateScreen() {
 
@@ -318,8 +641,10 @@ function updateScreen() {
         document.getElementById("counter");
 
 
-    if (currentIndex === -1 ||
-        patients.length === 0) {
+    if (
+        currentIndex === -1 ||
+        patients.length === 0
+    ) {
 
         name.textContent = "—";
         number.textContent = "Paciente";
@@ -328,22 +653,27 @@ function updateScreen() {
             "0 pacientes cargados";
 
         return;
+
     }
 
 
     number.textContent =
-        "Paciente " + (currentIndex + 1);
+        "Paciente " +
+        (currentIndex + 1);
+
 
     name.textContent =
-        patients[currentIndex];
+        patients[currentIndex].name;
 
 
-    const selected =
-        document.getElementById("destinationSelect")
-        .value;
+    document
+        .getElementById("destinationSelect")
+        .value =
+        patients[currentIndex].destination;
+
 
     destination.textContent =
-        selected;
+        patients[currentIndex].destination;
 
 
     counter.textContent =
@@ -354,115 +684,145 @@ function updateScreen() {
 }
 
 
-/* CAMBIAR DESTINO */
+/* =========================
+   CAMBIAR DESTINO
+========================= */
 
 function changeDestination() {
 
-    if (patients.length === 0) {
+    if (
+        patients.length === 0 ||
+        currentIndex === -1
+    ) {
         return;
     }
-
-    const selected =
-        document.getElementById("destinationSelect")
-        .value;
-
-    document.getElementById("destination")
-        .textContent = selected;
-
-}
-
-
-/* LLAMAR */
-
-function callPatient() {
-
-    if (patients.length === 0) {
-
-        alert(
-            "Primero debes cargar una lista de pacientes."
-        );
-
-        return;
-    }
-
-
-    speakPatient();
-
-}
-
-
-/* VOZ */
-
-function speakPatient() {
-
-    window.speechSynthesis.cancel();
-
-
-    const patient =
-        patients[currentIndex];
 
 
     const destination =
-        document.getElementById("destinationSelect")
+        document
+        .getElementById("destinationSelect")
         .value;
 
 
-    let text;
+    patients[currentIndex].destination =
+        destination;
 
 
-    if (destination === "signos vitales") {
+    document
+        .getElementById("destination")
+        .textContent =
+        destination;
 
-        text =
-            "Paciente " +
-            patient +
-            ", por favor pasar a signos vitales.";
 
-    }
+    showGroup();
 
-    else if (
-        destination.startsWith("esperar frente")
+}
+
+
+/* =========================
+   CREAR FRASE
+========================= */
+
+function createSentence(patient) {
+
+    const destination =
+        patient.destination;
+
+
+    if (
+        destination ===
+        "signos vitales"
     ) {
 
-        text =
+        return (
             "Paciente " +
-            patient +
+            patient.name +
+            ", por favor pasar a signos vitales."
+        );
+
+    }
+
+
+    if (
+        destination.startsWith(
+            "esperar frente"
+        )
+    ) {
+
+        return (
+            "Paciente " +
+            patient.name +
             ", por favor " +
             destination +
-            ".";
+            "."
+        );
 
     }
 
-    else {
 
-        text =
-            "Paciente " +
-            patient +
-            ", por favor pasar a " +
-            destination +
-            ".";
+    return (
+        "Paciente " +
+        patient.name +
+        ", por favor pasar a " +
+        destination +
+        "."
+    );
 
-    }
+}
+
+
+/* =========================
+   HABLAR
+========================= */
+
+function speak(text, finishedCallback) {
+
+    window.speechSynthesis.cancel();
 
 
     const speech =
         new SpeechSynthesisUtterance(text);
 
 
+    const voiceIndex =
+        parseInt(
+            document
+            .getElementById("voiceSelect")
+            .value
+        );
+
+
+    if (
+        !isNaN(voiceIndex) &&
+        voices[voiceIndex]
+    ) {
+
+        speech.voice =
+            voices[voiceIndex];
+
+    }
+
+
     speech.lang = "es-GT";
-    speech.rate = 0.85;
+
+
+    speech.rate =
+        parseFloat(
+            document
+            .getElementById("rate")
+            .value
+        );
+
+
     speech.pitch = 1;
     speech.volume = 1;
 
 
-    document.getElementById("status")
-        .textContent = "🔊 Llamando...";
-
-
     speech.onend = function() {
 
-        document.getElementById("status")
-            .textContent =
-            "Llamado realizado";
+        if (finishedCallback) {
+            finishedCallback();
+        }
 
     };
 
@@ -472,29 +832,78 @@ function speakPatient() {
 }
 
 
-/* SIGUIENTE */
+/* =========================
+   LLAMAR INDIVIDUAL
+========================= */
+
+function callPatient() {
+
+    if (patients.length === 0) {
+
+        alert(
+            "Primero debes cargar pacientes."
+        );
+
+        return;
+
+    }
+
+
+    const text =
+        createSentence(
+            patients[currentIndex]
+        );
+
+
+    document
+        .getElementById("status")
+        .textContent =
+        "🔊 Llamando...";
+
+
+    speak(
+        text,
+        function() {
+
+            document
+                .getElementById("status")
+                .textContent =
+                "Llamado realizado.";
+
+        }
+    );
+
+}
+
+
+/* =========================
+   SIGUIENTE
+========================= */
 
 function nextPatient() {
 
     if (patients.length === 0) {
 
         alert(
-            "Primero debes cargar una lista."
+            "Primero debes cargar pacientes."
         );
 
         return;
+
     }
 
 
-    if (currentIndex <
-        patients.length - 1) {
+    if (
+        currentIndex <
+        patients.length - 1
+    ) {
 
         currentIndex++;
 
         updateScreen();
 
-
-        document.getElementById("status")
+        document
+            .getElementById("status")
             .textContent =
             "Listo para llamar.";
 
@@ -502,7 +911,8 @@ function nextPatient() {
 
     else {
 
-        document.getElementById("status")
+        document
+            .getElementById("status")
             .textContent =
             "✅ No hay más pacientes.";
 
@@ -511,7 +921,9 @@ function nextPatient() {
 }
 
 
-/* REPETIR */
+/* =========================
+   REPETIR
+========================= */
 
 function repeatPatient() {
 
@@ -522,20 +934,227 @@ function repeatPatient() {
         return;
     }
 
-    speakPatient();
+
+    callPatient();
 
 }
 
 
-/* DETENER */
+/* =========================
+   DETENER
+========================= */
 
 function stopCalling() {
 
     window.speechSynthesis.cancel();
 
-    document.getElementById("status")
+
+    document
+        .getElementById("status")
         .textContent =
         "Voz detenida.";
+
+}
+
+
+/* =========================
+   MOSTRAR GRUPO
+========================= */
+
+function showGroup() {
+
+    const destination =
+        document
+        .getElementById("groupDestination")
+        .value;
+
+
+    const group =
+        patients.filter(
+            patient =>
+            patient.destination ===
+            destination
+        );
+
+
+    const result =
+        document
+        .getElementById("groupResult");
+
+
+    if (group.length === 0) {
+
+        result.innerHTML =
+            "No hay pacientes asignados a este destino.";
+
+        return;
+
+    }
+
+
+    let html =
+        "<strong>" +
+        group.length +
+        " paciente(s)</strong><br><br>";
+
+
+    group.forEach(
+        (patient, index) => {
+
+            html +=
+                (index + 1) +
+                ". " +
+                patient.name +
+                "<br>";
+
+        }
+    );
+
+
+    result.innerHTML = html;
+
+}
+
+
+/* =========================
+   LLAMAR GRUPO
+========================= */
+
+function callGroup() {
+
+    if (patients.length === 0) {
+
+        alert(
+            "Primero debes cargar pacientes."
+        );
+
+        return;
+
+    }
+
+
+    const destination =
+        document
+        .getElementById("groupDestination")
+        .value;
+
+
+    const group =
+        patients.filter(
+            patient =>
+            patient.destination ===
+            destination
+        );
+
+
+    if (group.length === 0) {
+
+        alert(
+            "No hay pacientes para este destino."
+        );
+
+        return;
+
+    }
+
+
+    let names;
+
+
+    if (group.length === 1) {
+
+        names =
+            group[0].name;
+
+    }
+
+    else if (group.length === 2) {
+
+        names =
+            group[0].name +
+            " y " +
+            group[1].name;
+
+    }
+
+    else {
+
+        const firstNames =
+            group
+            .slice(0, -1)
+            .map(p => p.name)
+            .join(", ");
+
+        const lastName =
+            group[group.length - 1].name;
+
+        names =
+            firstNames +
+            " y " +
+            lastName;
+
+    }
+
+
+    let sentence;
+
+
+    if (
+        destination ===
+        "signos vitales"
+    ) {
+
+        sentence =
+            "Atención. " +
+            names +
+            ", por favor pasar a signos vitales.";
+
+    }
+
+    else if (
+        destination.startsWith(
+            "esperar frente"
+        )
+    ) {
+
+        sentence =
+            "Atención. " +
+            names +
+            ", por favor " +
+            destination +
+            ".";
+
+    }
+
+    else {
+
+        sentence =
+            "Atención. " +
+            names +
+            ", por favor pasar a " +
+            destination +
+            ".";
+
+    }
+
+
+    document
+        .getElementById("status")
+        .textContent =
+        "📢 Llamando grupo...";
+
+
+    speak(
+        sentence,
+        function() {
+
+            document
+                .getElementById("status")
+                .textContent =
+                "Llamado de grupo realizado.";
+
+        }
+    );
 
 }
 
